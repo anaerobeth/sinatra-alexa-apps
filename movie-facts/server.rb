@@ -20,6 +20,21 @@ post '/' do
     }.to_json
   end
 
+  number_of_requests = parsed_request["session"]["attributes"]["numberOfRequests"] + 1
+  if number_of_requests > 1
+    return {
+      version: "1.0",
+      sessionAttributes: {
+        numberOfRequests: number_of_requests
+      },
+      response: {
+        outputSpeech: {
+          type: "PlainText",
+          text: "This is question number #{ number_of_requests }"
+        }
+      }
+    }.to_json
+  end
   return {
     version: "1.0",
     response: {
